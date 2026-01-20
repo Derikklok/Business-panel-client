@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
       token: {
         // Seed Token
         // colorPrimary: "#000CEB",
-        borderRadius: 5,
+        borderRadius: 10,
 
         // Alias Token
         // colorBgContainer: '#f6ffed',

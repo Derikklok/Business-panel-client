@@ -1,25 +1,17 @@
-import { Layout, Menu, Tooltip } from "antd";
+import { Layout, Menu } from "antd";
 import {
   DashboardOutlined,
   UserOutlined,
   FileTextOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import "../../styles/layout.css";
 
 const { Header, Sider, Content } = Layout;
 
 const LayoutWrapper = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const toggleCollapse = () => {
-    setCollapsed(!collapsed);
-  };
 
   // Determine selected menu key based on current route
   const getSelectedKey = () => {
@@ -57,15 +49,13 @@ const LayoutWrapper = () => {
   return (
     <Layout className="dashboard-layout">
       <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
+        collapsible={false}
         className="dashboard-sider"
         width={250}
       >
         <div className="logo">
           <DashboardOutlined className="logo-icon" />
-          {!collapsed && <span className="logo-text">Business Panel</span>}
+          <span className="logo-text">Business Panel</span>
         </div>
         <Menu
           theme="dark"
@@ -78,15 +68,6 @@ const LayoutWrapper = () => {
 
       <Layout className="dashboard-content-layout">
         <Header className="dashboard-header">
-          <Tooltip title={collapsed ? "Expand" : "Collapse"}>
-            <button
-              className="collapse-trigger"
-              onClick={toggleCollapse}
-              aria-label="Toggle sidebar"
-            >
-              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            </button>
-          </Tooltip>
           <h1 className="dashboard-header-title">Business Management System</h1>
         </Header>
 
