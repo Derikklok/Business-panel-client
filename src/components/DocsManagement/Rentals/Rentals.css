@@ -1,0 +1,41 @@
+.rentals {
+  padding: 16px;
+  background-color: #1c1a22;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.rentals-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.rentals-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.rentals-table :where(.ant-table) {
+  background-color: #1c1a22;
+  color: #ffffff;
+}
+
+.rentals-table :where(.ant-table-thead > tr > th) {
+  background-color: #262330;
+  border-bottom-color: #434343;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.rentals-table :where(.ant-table-tbody > tr > td) {
+  border-bottom-color: #434343;
+  color: #e6e6e6;
+}
+
+.rentals-table :where(.ant-table-tbody > tr:hover > td) {
+  background-color: #2a2730;
+}
