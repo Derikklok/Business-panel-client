@@ -1,0 +1,12 @@
+:root {
+  /* Optional: Set standard font if not already set */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  /* Set the global page background to a dark color to match AntD */
+  background-color: #1c1a22; 
+  color: #ffffff;
+  min-height: 100vh;
+}
