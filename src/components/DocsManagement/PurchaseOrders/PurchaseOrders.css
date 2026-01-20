@@ -1,0 +1,41 @@
+.purchase-orders {
+  padding: 16px;
+  background-color: #1c1a22;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.purchase-orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.purchase-orders-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.purchase-orders-table :where(.ant-table) {
+  background-color: #1c1a22;
+  color: #ffffff;
+}
+
+.purchase-orders-table :where(.ant-table-thead > tr > th) {
+  background-color: #262330;
+  border-bottom-color: #434343;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.purchase-orders-table :where(.ant-table-tbody > tr > td) {
+  border-bottom-color: #434343;
+  color: #e6e6e6;
+}
+
+.purchase-orders-table :where(.ant-table-tbody > tr:hover > td) {
+  background-color: #2a2730;
+}

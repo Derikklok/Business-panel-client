@@ -1,0 +1,66 @@
+.customer-management {
+  padding: 24px;
+  background-color: #0d0d0d;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.customer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.customer-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.customer-table {
+  background-color: #1c1a22;
+  border-radius: 8px;
+}
+
+.customer-table :where(.ant-table-wrapper) {
+  background-color: #1c1a22;
+}
+
+.customer-table :where(.ant-table) {
+  background-color: #1c1a22;
+  color: #ffffff;
+}
+
+.customer-table :where(.ant-table-thead > tr > th) {
+  background-color: #262330;
+  border-bottom-color: #434343;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.customer-table :where(.ant-table-tbody > tr > td) {
+  border-bottom-color: #434343;
+  color: #e6e6e6;
+}
+
+.customer-table :where(.ant-table-tbody > tr:hover > td) {
+  background-color: #2a2730;
+}
+
+.customer-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+}
+
+.customer-table :where(.ant-pagination-item-active) {
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+
+.customer-table :where(.ant-pagination-item-active a) {
+  color: #ffffff;
+}

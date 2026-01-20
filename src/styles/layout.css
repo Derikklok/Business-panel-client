@@ -1,0 +1,138 @@
+/* Layout Wrapper Styles */
+.dashboard-layout {
+  min-height: 100vh;
+  background-color: #1c1a22;
+}
+
+.dashboard-sider {
+  background-color: #0d0d0d;
+  border-right: 1px solid #434343;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px 16px;
+  border-bottom: 1px solid #434343;
+  margin-bottom: 16px;
+}
+
+.logo-icon {
+  font-size: 24px;
+  color: #1890ff;
+  flex-shrink: 0;
+}
+
+.logo-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.dashboard-menu {
+  background-color: #0d0d0d;
+  border: none;
+}
+
+.dashboard-menu :where(.ant-menu-item) {
+  color: #e6e6e6;
+  background-color: transparent;
+}
+
+.dashboard-menu :where(.ant-menu-item:hover) {
+  color: #1890ff;
+  background-color: #262330;
+}
+
+.dashboard-menu :where(.ant-menu-item-selected) {
+  color: #1890ff;
+  background-color: #262330;
+}
+
+.dashboard-menu :where(.ant-menu-item-selected::after) {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.dashboard-content-layout {
+  background-color: #1c1a22;
+  margin-left: 250px;
+  transition: margin-left 0.2s;
+}
+
+.dashboard-sider-collapsed ~ .dashboard-content-layout {
+  margin-left: 80px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background-color: #0d0d0d;
+  border-bottom: 1px solid #434343;
+  padding: 0 24px;
+  height: 70px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.collapse-trigger {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #1890ff;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+  flex-shrink: 0;
+}
+
+.collapse-trigger:hover {
+  color: #40a9ff;
+}
+
+.dashboard-header-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  flex: 1;
+}
+
+.dashboard-content {
+  padding: 24px;
+  background-color: #1c1a22;
+  min-height: calc(100vh - 70px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-content-layout {
+    margin-left: 0;
+  }
+
+  .dashboard-header {
+    padding: 0 16px;
+  }
+
+  .dashboard-content {
+    padding: 16px;
+  }
+
+  .dashboard-header-title {
+    font-size: 16px;
+  }
+}

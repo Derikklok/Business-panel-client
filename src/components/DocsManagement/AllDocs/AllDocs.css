@@ -1,0 +1,35 @@
+.all-docs {
+  padding: 16px;
+  background-color: #1c1a22;
+  border-radius: 8px;
+}
+
+.all-docs-table :where(.ant-table) {
+  background-color: #1c1a22;
+  color: #ffffff;
+}
+
+.all-docs-table :where(.ant-table-thead > tr > th) {
+  background-color: #262330;
+  border-bottom-color: #434343;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.all-docs-table :where(.ant-table-tbody > tr > td) {
+  border-bottom-color: #434343;
+  color: #e6e6e6;
+}
+
+.all-docs-table :where(.ant-table-tbody > tr:hover > td) {
+  background-color: #2a2730;
+}
+
+.all-docs-table :where(.ant-pagination-item-active) {
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+
+.all-docs-table :where(.ant-pagination-item-active a) {
+  color: #ffffff;
+}

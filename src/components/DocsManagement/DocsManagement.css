@@ -1,0 +1,70 @@
+.docs-management-card {
+  background-color: #0d0d0d !important;
+  border-color: #434343 !important;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.docs-management-title {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.docs-tabs :where(.ant-tabs) {
+  color: #ffffff;
+}
+
+.docs-tabs :where(.ant-tabs-nav) {
+  background-color: #1c1a22;
+  border-bottom-color: #434343;
+  margin-bottom: 0;
+  padding: 12px 16px;
+  border-radius: 8px 8px 0 0;
+}
+
+.docs-tabs :where(.ant-tabs-tab) {
+  color: #8c8c8c;
+  border-color: transparent;
+  margin: 0 8px;
+}
+
+.docs-tabs :where(.ant-tabs-tab:hover) {
+  color: #1890ff;
+}
+
+.docs-tabs :where(.ant-tabs-tab-active) {
+  color: #1890ff;
+}
+
+.docs-tabs :where(.ant-tabs-tab-active::after) {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.docs-tabs :where(.ant-tabs-content-holder) {
+  background-color: #1c1a22;
+  border-radius: 0 0 8px 8px;
+  padding: 16px;
+}
+
+.docs-tabs :where(.ant-tabs-tabpane) {
+  background-color: transparent;
+}
+
+.docs-tabs :where(.ant-tabs-tabpane-active) {
+  animation: slideIn 0.3s ease-in;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
