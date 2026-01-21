@@ -1,35 +1,41 @@
-.all-docs {
-  padding: 16px;
-  background-color: #1c1a22;
-  border-radius: 8px;
+.all-docs-container {
+  padding: 0;
+  background-color: transparent;
 }
 
-.all-docs-table :where(.ant-table) {
-  background-color: #1c1a22;
-  color: #ffffff;
+.all-docs-table .ant-table {
+  background: transparent !important;
 }
 
-.all-docs-table :where(.ant-table-thead > tr > th) {
-  background-color: #262330;
-  border-bottom-color: #434343;
-  color: #ffffff;
-  font-weight: 600;
+.all-docs-table .ant-table-thead > tr > th {
+  background: rgba(99, 102, 241, 0.05) !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 12px !important;
 }
 
-.all-docs-table :where(.ant-table-tbody > tr > td) {
-  border-bottom-color: #434343;
-  color: #e6e6e6;
+.all-docs-table .ant-table-tbody > tr > td {
+  padding: 16px 12px !important;
+  font-size: 0.9rem;
+  color: var(--ant-color-text) !important; /* Ensure high contrast */
 }
 
-.all-docs-table :where(.ant-table-tbody > tr:hover > td) {
-  background-color: #2a2730;
+.all-docs-table .ant-table-row:hover > td {
+  background: rgba(99, 102, 241, 0.03) !important;
 }
 
-.all-docs-table :where(.ant-pagination-item-active) {
-  border-color: #1890ff;
-  background-color: #1890ff;
+.doc-type-tag {
+  border-radius: 12px !important;
+  padding: 0 10px !important;
+  font-weight: 500 !important;
+  font-size: 11px !important;
+  text-transform: uppercase !important;
 }
 
-.all-docs-table :where(.ant-pagination-item-active a) {
-  color: #ffffff;
+@media (max-width: 768px) {
+  .all-docs-container {
+    padding: 8px;
+  }
 }

@@ -1,4 +1,4 @@
-import { Table, Tag, Space, Button, Popconfirm, message } from "antd";
+import { Table, Tag, Space, Button, Popconfirm, message, Tooltip } from "antd";
 import { EditOutlined, DeleteOutlined, FileTextOutlined, CalculatorOutlined, ShoppingOutlined, CarOutlined } from "@ant-design/icons";
 import "./AllDocs.css";
 
@@ -10,7 +10,6 @@ interface AllDoc {
   amount: number;
   status: string;
   date: string;
-  icon: React.ReactNode;
 }
 
 const AllDocs = () => {
@@ -23,7 +22,6 @@ const AllDocs = () => {
       amount: 5000,
       status: "paid",
       date: "2026-01-15",
-      icon: <FileTextOutlined />,
     },
     {
       key: "2",
@@ -33,7 +31,6 @@ const AllDocs = () => {
       amount: 3500,
       status: "pending",
       date: "2026-01-18",
-      icon: <FileTextOutlined />,
     },
     {
       key: "3",
@@ -43,7 +40,6 @@ const AllDocs = () => {
       amount: 7500,
       status: "quoted",
       date: "2026-01-15",
-      icon: <CalculatorOutlined />,
     },
     {
       key: "4",
@@ -53,7 +49,6 @@ const AllDocs = () => {
       amount: 4200,
       status: "accepted",
       date: "2026-01-18",
-      icon: <CalculatorOutlined />,
     },
     {
       key: "5",
@@ -63,7 +58,6 @@ const AllDocs = () => {
       amount: 8500,
       status: "ordered",
       date: "2026-01-15",
-      icon: <ShoppingOutlined />,
     },
     {
       key: "6",
@@ -73,7 +67,6 @@ const AllDocs = () => {
       amount: 5200,
       status: "pending",
       date: "2026-01-18",
-      icon: <ShoppingOutlined />,
     },
     {
       key: "7",
@@ -83,7 +76,6 @@ const AllDocs = () => {
       amount: 50,
       status: "active",
       date: "2026-01-15",
-      icon: <CarOutlined />,
     },
     {
       key: "8",
@@ -93,75 +85,51 @@ const AllDocs = () => {
       amount: 75,
       status: "active",
       date: "2026-01-18",
-      icon: <CarOutlined />,
     },
   ];
+
+  const getDocIcon = (docType: string) => {
+    switch (docType) {
+      case "Invoice": return <FileTextOutlined style={{ marginRight: 8, color: "#1890ff" }} />;
+      case "Estimate": return <CalculatorOutlined style={{ marginRight: 8, color: "#faad14" }} />;
+      case "Purchase Order": return <ShoppingOutlined style={{ marginRight: 8, color: "#722ed1" }} />;
+      case "Rental": return <CarOutlined style={{ marginRight: 8, color: "#eb2f96" }} />;
+      default: return null;
+    }
+  };
 
   const getStatusColor = (docType: string, status: string) => {
     switch (docType) {
       case "Invoice":
         switch (status) {
-          case "paid":
-            return "green";
-          case "pending":
-            return "orange";
-          case "overdue":
-            return "red";
-          default:
-            return "blue";
+          case "paid": return "green";
+          case "pending": return "orange";
+          case "overdue": return "red";
+          default: return "blue";
         }
       case "Estimate":
         switch (status) {
-          case "accepted":
-            return "green";
-          case "quoted":
-            return "blue";
-          case "rejected":
-            return "red";
-          default:
-            return "default";
+          case "accepted": return "green";
+          case "quoted": return "blue";
+          case "rejected": return "red";
+          default: return "default";
         }
       case "Purchase Order":
         switch (status) {
-          case "delivered":
-            return "green";
-          case "ordered":
-            return "blue";
-          case "pending":
-            return "orange";
-          case "cancelled":
-            return "red";
-          default:
-            return "default";
+          case "delivered": return "green";
+          case "ordered": return "blue";
+          case "pending": return "orange";
+          case "cancelled": return "red";
+          default: return "default";
         }
       case "Rental":
         switch (status) {
-          case "active":
-            return "green";
-          case "completed":
-            return "blue";
-          case "cancelled":
-            return "red";
-          default:
-            return "default";
+          case "active": return "green";
+          case "completed": return "blue";
+          case "cancelled": return "red";
+          default: return "default";
         }
-      default:
-        return "default";
-    }
-  };
-
-  const getDocTypeColor = (docType: string) => {
-    switch (docType) {
-      case "Invoice":
-        return "cyan";
-      case "Estimate":
-        return "gold";
-      case "Purchase Order":
-        return "purple";
-      case "Rental":
-        return "magenta";
-      default:
-        return "default";
+      default: return "default";
     }
   };
 
@@ -170,20 +138,21 @@ const AllDocs = () => {
       title: "Document ID",
       dataIndex: "docId",
       key: "docId",
-      width: 120,
+      width: 140,
       render: (text: string, record: AllDoc) => (
         <span>
-          {record.icon} {text}
+          {getDocIcon(record.docType)}
+          {text}
         </span>
       ),
     },
     {
-      title: "Document Type",
+      title: "Type",
       dataIndex: "docType",
       key: "docType",
-      width: 140,
+      width: 130,
       render: (docType: string) => (
-        <Tag color={getDocTypeColor(docType)}>{docType}</Tag>
+        <Tag className="doc-type-tag" color="purple">{docType}</Tag>
       ),
     },
     {
@@ -215,41 +184,47 @@ const AllDocs = () => {
     {
       title: "Actions",
       key: "actions",
-      width: 180,
+      width: 110,
       render: (_: unknown, record: AllDoc) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => message.info(`Edit ${record.docId}`)}
-          >
-            Edit
-          </Button>
-          <Popconfirm
-            title="Delete Document"
-            description="Are you sure you want to delete this document?"
-            onConfirm={() => message.success(`${record.docId} deleted`)}
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="primary" danger size="small" icon={<DeleteOutlined />}>
-              Delete
-            </Button>
-          </Popconfirm>
+        <Space size="small">
+          <Tooltip title="Edit Document">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => message.info(`Edit ${record.docId}`)}
+              className="action-btn edit-btn"
+            />
+          </Tooltip>
+          <Tooltip title="Delete Document">
+            <Popconfirm
+              title="Delete Document"
+              description="Are you sure you want to delete this document?"
+              onConfirm={() => message.success(`${record.docId} deleted`)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button
+                type="text"
+                danger
+                size="small"
+                icon={<DeleteOutlined />}
+                className="action-btn delete-btn"
+              />
+            </Popconfirm>
+          </Tooltip>
         </Space>
       ),
     },
   ];
 
   return (
-    <div className="all-docs">
+    <div className="all-docs-container">
       <Table
         columns={columns}
         dataSource={allDocuments}
-        pagination={{ pageSize: 10 }}
+        pagination={{ pageSize: 12, size: "small" }}
         className="all-docs-table"
-        scroll={{ x: 1200 }}
       />
     </div>
   );

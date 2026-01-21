@@ -1,4 +1,4 @@
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, FileTextOutlined, CalculatorOutlined, ShoppingOutlined } from "@ant-design/icons";
 import "../styles/dashboard.css";
 
 const DashboardOverviewPage = () => {
@@ -23,7 +23,7 @@ const DashboardOverviewPage = () => {
 
         <div className="stat-card">
           <div className="stat-icon invoices-icon">
-            <UserOutlined />
+            <FileTextOutlined />
           </div>
           <div className="stat-content">
             <h3>Invoices</h3>
@@ -34,7 +34,7 @@ const DashboardOverviewPage = () => {
 
         <div className="stat-card">
           <div className="stat-icon estimates-icon">
-            <UserOutlined />
+            <CalculatorOutlined />
           </div>
           <div className="stat-content">
             <h3>Estimates</h3>
@@ -45,7 +45,7 @@ const DashboardOverviewPage = () => {
 
         <div className="stat-card">
           <div className="stat-icon orders-icon">
-            <UserOutlined />
+            <ShoppingOutlined />
           </div>
           <div className="stat-content">
             <h3>Purchase Orders</h3>

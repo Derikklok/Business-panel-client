@@ -1,6 +1,7 @@
-import { Table, Button, Modal, Form, Input, InputNumber, Select, Space, Tag, Popconfirm, message, DatePicker } from "antd";
+import { Table, Button, Modal, Form, Input, InputNumber, Select, Space, Tag, Popconfirm, message, DatePicker, Tooltip } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, ShoppingOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import dayjs from "dayjs";
 import "./PurchaseOrders.css";
 
 interface PurchaseOrder {
@@ -47,7 +48,11 @@ const PurchaseOrders = () => {
 
   const handleEditPO = (po: PurchaseOrder) => {
     setEditingPO(po);
-    form.setFieldsValue(po);
+    form.setFieldsValue({
+      ...po,
+      date: dayjs(po.date),
+      expectedDelivery: dayjs(po.expectedDelivery),
+    });
     setIsModalVisible(true);
   };
 
@@ -58,10 +63,16 @@ const PurchaseOrders = () => {
 
   const handleModalOk = () => {
     form.validateFields().then((values) => {
+      const formattedValues = {
+        ...values,
+        date: values.date.format("YYYY-MM-DD"),
+        expectedDelivery: values.expectedDelivery.format("YYYY-MM-DD"),
+      };
+
       if (editingPO) {
         setPurchaseOrders(
           purchaseOrders.map((po) =>
-            po.key === editingPO.key ? { ...po, ...values } : po
+            po.key === editingPO.key ? { ...po, ...formattedValues } : po
           )
         );
         message.success("Purchase Order updated successfully");
@@ -69,7 +80,7 @@ const PurchaseOrders = () => {
         const newPO: PurchaseOrder = {
           key: Date.now().toString(),
           id: `PO${Math.floor(Math.random() * 10000)}`,
-          ...values,
+          ...formattedValues,
         };
         setPurchaseOrders([...purchaseOrders, newPO]);
         message.success("Purchase Order created successfully");
@@ -98,7 +109,7 @@ const PurchaseOrders = () => {
       title: "PO ID",
       dataIndex: "id",
       key: "id",
-      width: 100,
+      width: 120,
       render: (text: string) => (
         <span>
           <ShoppingOutlined /> {text}
@@ -130,23 +141,29 @@ const PurchaseOrders = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 120,
       render: (status: string) => (
-        <Tag color={getStatusColor(status)}>{status.toUpperCase()}</Tag>
+        <Tag color={getStatusColor(status)} style={{ minWidth: "80px", textAlign: "center" }}>
+          {status.toUpperCase()}
+        </Tag>
       ),
     },
     {
       title: "Actions",
       key: "actions",
+      width: 120,
+      align: "right" as const,
       render: (_: unknown, record: PurchaseOrder) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => handleEditPO(record)}
-          >
-            Edit
-          </Button>
+        <Space size="small">
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => handleEditPO(record)}
+              className="action-btn edit-btn"
+            />
+          </Tooltip>
           <Popconfirm
             title="Delete Purchase Order"
             description="Are you sure you want to delete this purchase order?"
@@ -154,9 +171,15 @@ const PurchaseOrders = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="primary" danger size="small" icon={<DeleteOutlined />}>
-              Delete
-            </Button>
+            <Tooltip title="Delete">
+              <Button 
+                type="text" 
+                danger 
+                size="small" 
+                icon={<DeleteOutlined />} 
+                className="action-btn delete-btn"
+              />
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
@@ -166,9 +189,14 @@ const PurchaseOrders = () => {
   return (
     <div className="purchase-orders">
       <div className="purchase-orders-header">
-        <h3>Purchase Orders</h3>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleAddPO}>
-          Create Purchase Order
+        <h3 className="section-subtitle">Purchase Orders</h3>
+        <Button 
+          type="primary" 
+          icon={<PlusOutlined />} 
+          onClick={handleAddPO}
+          className="create-doc-btn"
+        >
+          Create PO
         </Button>
       </div>
 
@@ -177,59 +205,71 @@ const PurchaseOrders = () => {
         dataSource={purchaseOrders}
         pagination={{ pageSize: 8 }}
         className="purchase-orders-table"
-        size="small"
       />
 
       <Modal
-        title={editingPO ? "Edit Purchase Order" : "Create New Purchase Order"}
+        title={
+          <div className="modal-header">
+            <ShoppingOutlined style={{ marginRight: 8, color: "#6366f1" }} />
+            {editingPO ? "Edit PO" : "Create New PO"}
+          </div>
+        }
         open={isModalVisible}
         onOk={handleModalOk}
         onCancel={() => setIsModalVisible(false)}
         width={500}
+        okText={editingPO ? "Update" : "Create"}
+        cancelText="Cancel"
+        className="docs-modal"
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" requiredMark="optional">
           <Form.Item
             label="Vendor Name"
             name="vendorName"
             rules={[{ required: true, message: "Please enter vendor name" }]}
           >
-            <Input placeholder="Enter vendor name" />
+            <Input placeholder="Enter vendor name" size="large" />
           </Form.Item>
-          <Form.Item
-            label="Amount"
-            name="amount"
-            rules={[{ required: true, message: "Please enter amount" }]}
-          >
-            <InputNumber prefix="$" min={0} placeholder="0.00" />
-          </Form.Item>
-          <Form.Item
-            label="Date"
-            name="date"
-            rules={[{ required: true, message: "Please select date" }]}
-          >
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item
-            label="Expected Delivery"
-            name="expectedDelivery"
-            rules={[{ required: true, message: "Please select delivery date" }]}
-          >
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: "Please select status" }]}
-          >
-            <Select
-              options={[
-                { label: "Pending", value: "pending" },
-                { label: "Ordered", value: "ordered" },
-                { label: "Delivered", value: "delivered" },
-                { label: "Cancelled", value: "cancelled" },
-              ]}
-            />
-          </Form.Item>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <Form.Item
+              label="Amount"
+              name="amount"
+              rules={[{ required: true, message: "Please enter amount" }]}
+            >
+              <InputNumber prefix="$" min={0} style={{ width: "100%" }} size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Status"
+              name="status"
+              rules={[{ required: true, message: "Please select status" }]}
+            >
+              <Select
+                size="large"
+                options={[
+                  { label: "Pending", value: "pending" },
+                  { label: "Ordered", value: "ordered" },
+                  { label: "Delivered", value: "delivered" },
+                  { label: "Cancelled", value: "cancelled" },
+                ]}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <Form.Item
+              label="Date"
+              name="date"
+              rules={[{ required: true, message: "Please select date" }]}
+            >
+              <DatePicker style={{ width: "100%" }} size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Expected Delivery"
+              name="expectedDelivery"
+              rules={[{ required: true, message: "Please select delivery date" }]}
+            >
+              <DatePicker style={{ width: "100%" }} size="large" />
+            </Form.Item>
+          </div>
         </Form>
       </Modal>
     </div>

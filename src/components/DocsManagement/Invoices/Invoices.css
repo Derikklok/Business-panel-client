@@ -1,8 +1,6 @@
 .invoices {
-  padding: 16px;
-  background-color: #1c1a22;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  padding: 0;
+  background-color: transparent;
 }
 
 .invoices-header {
@@ -14,28 +12,67 @@
 
 .invoices-header h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.invoices-table :where(.ant-table) {
-  background-color: #1c1a22;
-  color: #ffffff;
-}
-
-.invoices-table :where(.ant-table-thead > tr > th) {
-  background-color: #262330;
-  border-bottom-color: #434343;
-  color: #ffffff;
+  font-size: 1.1rem;
   font-weight: 600;
 }
 
-.invoices-table :where(.ant-table-tbody > tr > td) {
-  border-bottom-color: #434343;
-  color: #e6e6e6;
+.invoices-table .ant-table {
+  background: transparent !important;
 }
 
-.invoices-table :where(.ant-table-tbody > tr:hover > td) {
-  background-color: #2a2730;
+.invoices-table .ant-table-thead > tr > th {
+  background: rgba(99, 102, 241, 0.05) !important;
+  font-weight: 600 !important;
+  font-size: 0.75rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 16px 12px !important;
+}
+
+.invoices-table .ant-table-tbody > tr > td {
+  padding: 16px 12px !important;
+  font-size: 0.9rem;
+  color: var(--ant-color-text) !important;
+}
+
+.invoices-table .ant-table-row:hover > td {
+  background-color: rgba(99, 102, 241, 0.02) !important;
+}
+
+@media (max-width: 768px) {
+  .invoices {
+    padding: 8px;
+  }
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px !important;
+  transition: all 0.2s !important;
+}
+
+.edit-btn:hover {
+  background: rgba(99, 102, 241, 0.1) !important;
+  color: #6366f1 !important;
+}
+
+.delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: #ef4444 !important;
+}
+
+.create-doc-btn {
+  height: 40px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.section-subtitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
 }

@@ -97,10 +97,10 @@ const CustomerManagement = () => {
       title: "Registration No",
       dataIndex: "registrationNo",
       key: "registrationNo",
-      width: 160,
+      width: 150,
       render: (text: string) => (
         <div className="cell-with-copy">
-          <span className="cell-text">{text}</span>
+          <span className="registration-no-text">{text}</span>
           <Button
             type="text"
             size="small"
@@ -118,50 +118,43 @@ const CustomerManagement = () => {
       title: "Company",
       dataIndex: "company",
       key: "company",
-      width: 140,
+      width: 150,
+      render: (text: string) => <span style={{ fontWeight: 600 }}>{text}</span>
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
-      width: 170,
+      width: 200,
+      ellipsis: true,
     },
     {
       title: "Address",
       dataIndex: "address",
       key: "address",
-      width: 240,
+      ellipsis: true,
       render: (text: string) => (
-        <div className="cell-with-copy">
-          <Tooltip title={text}>
-            <span className="cell-text cell-truncate">{text}</span>
-          </Tooltip>
-          <Button
-            type="text"
-            size="small"
-            icon={<CopyOutlined />}
-            onClick={() => {
-              navigator.clipboard.writeText(text);
-              message.success("Copied to clipboard");
-            }}
-            className="copy-btn"
-          />
-        </div>
+        <Tooltip title={text}>
+          <span>{text}</span>
+        </Tooltip>
       ),
     },
     {
       title: "Actions",
       key: "actions",
-      width: 120,
-      fixed: "right" as const,
+      width: 100,
+      align: 'right' as const,
       render: (_: unknown, record: Customer) => (
         <Space size="small">
-          <Button
-            type="primary"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => handleEditCustomer(record)}
-          />
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => handleEditCustomer(record)}
+              className="action-btn edit-btn"
+            />
+          </Tooltip>
           <Popconfirm
             title="Delete Customer"
             description="Are you sure you want to delete this customer?"
@@ -169,9 +162,15 @@ const CustomerManagement = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="primary" danger size="small" icon={<DeleteOutlined />}>
-              Delete
-            </Button>
+            <Tooltip title="Delete">
+              <Button 
+                type="text" 
+                danger 
+                size="small" 
+                icon={<DeleteOutlined />} 
+                className="action-btn delete-btn"
+              />
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
@@ -208,7 +207,6 @@ const CustomerManagement = () => {
           }}
           className="customer-table"
           rowClassName="customer-row"
-          scroll={{ x: 1400 }}
         />
       </Card>
 

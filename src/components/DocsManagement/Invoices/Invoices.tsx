@@ -1,6 +1,7 @@
-import { Table, Button, Modal, Form, Input, InputNumber, Select, Space, Tag, Popconfirm, message, DatePicker } from "antd";
+import { Table, Button, Modal, Form, Input, InputNumber, Select, Space, Tag, Popconfirm, message, DatePicker, Tooltip } from "antd";
 import { PlusOutlined, EditOutlined, DeleteOutlined, FileTextOutlined } from "@ant-design/icons";
 import { useState } from "react";
+import dayjs from "dayjs";
 import "./Invoices.css";
 
 interface Invoice {
@@ -47,7 +48,11 @@ const Invoices = () => {
 
   const handleEditInvoice = (invoice: Invoice) => {
     setEditingInvoice(invoice);
-    form.setFieldsValue(invoice);
+    form.setFieldsValue({
+      ...invoice,
+      date: dayjs(invoice.date),
+      dueDate: dayjs(invoice.dueDate),
+    });
     setIsModalVisible(true);
   };
 
@@ -58,10 +63,16 @@ const Invoices = () => {
 
   const handleModalOk = () => {
     form.validateFields().then((values) => {
+      const formattedValues = {
+        ...values,
+        date: values.date.format("YYYY-MM-DD"),
+        dueDate: values.dueDate.format("YYYY-MM-DD"),
+      };
+
       if (editingInvoice) {
         setInvoices(
           invoices.map((inv) =>
-            inv.key === editingInvoice.key ? { ...inv, ...values } : inv
+            inv.key === editingInvoice.key ? { ...inv, ...formattedValues } : inv
           )
         );
         message.success("Invoice updated successfully");
@@ -69,7 +80,7 @@ const Invoices = () => {
         const newInvoice: Invoice = {
           key: Date.now().toString(),
           id: `INV${Math.floor(Math.random() * 10000)}`,
-          ...values,
+          ...formattedValues,
         };
         setInvoices([...invoices, newInvoice]);
         message.success("Invoice created successfully");
@@ -128,23 +139,29 @@ const Invoices = () => {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      width: 120,
       render: (status: string) => (
-        <Tag color={getStatusColor(status)}>{status.toUpperCase()}</Tag>
+        <Tag color={getStatusColor(status)} style={{ minWidth: "80px", textAlign: "center" }}>
+          {status.toUpperCase()}
+        </Tag>
       ),
     },
     {
       title: "Actions",
       key: "actions",
+      width: 120,
+      align: "right" as const,
       render: (_: unknown, record: Invoice) => (
-        <Space size="middle">
-          <Button
-            type="primary"
-            size="small"
-            icon={<EditOutlined />}
-            onClick={() => handleEditInvoice(record)}
-          >
-            Edit
-          </Button>
+        <Space size="small">
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              size="small"
+              icon={<EditOutlined />}
+              onClick={() => handleEditInvoice(record)}
+              className="action-btn edit-btn"
+            />
+          </Tooltip>
           <Popconfirm
             title="Delete Invoice"
             description="Are you sure you want to delete this invoice?"
@@ -152,9 +169,15 @@ const Invoices = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button type="primary" danger size="small" icon={<DeleteOutlined />}>
-              Delete
-            </Button>
+            <Tooltip title="Delete">
+              <Button 
+                type="text" 
+                danger 
+                size="small" 
+                icon={<DeleteOutlined />} 
+                className="action-btn delete-btn"
+              />
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
@@ -164,8 +187,13 @@ const Invoices = () => {
   return (
     <div className="invoices">
       <div className="invoices-header">
-        <h3>Invoices</h3>
-        <Button type="primary" icon={<PlusOutlined />} onClick={handleAddInvoice}>
+        <h3 className="section-subtitle">Invoices</h3>
+        <Button 
+          type="primary" 
+          icon={<PlusOutlined />} 
+          onClick={handleAddInvoice}
+          className="create-doc-btn"
+        >
           Create Invoice
         </Button>
       </div>
@@ -175,58 +203,70 @@ const Invoices = () => {
         dataSource={invoices}
         pagination={{ pageSize: 8 }}
         className="invoices-table"
-        size="small"
       />
 
       <Modal
-        title={editingInvoice ? "Edit Invoice" : "Create New Invoice"}
+        title={
+          <div className="modal-header">
+            <FileTextOutlined style={{ marginRight: 8, color: "#6366f1" }} />
+            {editingInvoice ? "Edit Invoice" : "Create New Invoice"}
+          </div>
+        }
         open={isModalVisible}
         onOk={handleModalOk}
         onCancel={() => setIsModalVisible(false)}
         width={500}
+        okText={editingInvoice ? "Update" : "Create"}
+        cancelText="Cancel"
+        className="docs-modal"
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" requiredMark="optional">
           <Form.Item
             label="Customer Name"
             name="customerName"
             rules={[{ required: true, message: "Please enter customer name" }]}
           >
-            <Input placeholder="Enter customer name" />
+            <Input placeholder="Enter customer name" size="large" />
           </Form.Item>
-          <Form.Item
-            label="Amount"
-            name="amount"
-            rules={[{ required: true, message: "Please enter amount" }]}
-          >
-            <InputNumber prefix="$" min={0} placeholder="0.00" />
-          </Form.Item>
-          <Form.Item
-            label="Date"
-            name="date"
-            rules={[{ required: true, message: "Please select date" }]}
-          >
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item
-            label="Due Date"
-            name="dueDate"
-            rules={[{ required: true, message: "Please select due date" }]}
-          >
-            <DatePicker style={{ width: "100%" }} />
-          </Form.Item>
-          <Form.Item
-            label="Status"
-            name="status"
-            rules={[{ required: true, message: "Please select status" }]}
-          >
-            <Select
-              options={[
-                { label: "Paid", value: "paid" },
-                { label: "Pending", value: "pending" },
-                { label: "Overdue", value: "overdue" },
-              ]}
-            />
-          </Form.Item>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <Form.Item
+              label="Amount"
+              name="amount"
+              rules={[{ required: true, message: "Please enter amount" }]}
+            >
+              <InputNumber prefix="$" min={0} style={{ width: "100%" }} size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Status"
+              name="status"
+              rules={[{ required: true, message: "Please select status" }]}
+            >
+              <Select
+                size="large"
+                options={[
+                  { label: "Paid", value: "paid" },
+                  { label: "Pending", value: "pending" },
+                  { label: "Overdue", value: "overdue" },
+                ]}
+              />
+            </Form.Item>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <Form.Item
+              label="Date"
+              name="date"
+              rules={[{ required: true, message: "Please select date" }]}
+            >
+              <DatePicker style={{ width: "100%" }} size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Due Date"
+              name="dueDate"
+              rules={[{ required: true, message: "Please select due date" }]}
+            >
+              <DatePicker style={{ width: "100%" }} size="large" />
+            </Form.Item>
+          </div>
         </Form>
       </Modal>
     </div>
